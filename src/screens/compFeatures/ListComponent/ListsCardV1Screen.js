@@ -1,6 +1,6 @@
 import React from 'react';
 import {withNavigation} from 'react-navigation';
-import {Container, Header, ListsCardV1, View} from '../../../components';
+import {Container, Header, ListsCardV1} from '../../../components';
 import LISTMOVIE from './../../../api/DummyData';
 
 const ListsCardV1Screen = props => {

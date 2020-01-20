@@ -1,10 +1,6 @@
 import React from 'react';
 
-import {
-  Container,
-  DetailComponentV1,
-  DetailComponentV2,
-} from './../../../components';
+import {Container, DetailComponentV1} from './../../../components';
 
 const DetailV1CompScreen = props => {
   const navData = props.navigation.getParam('data');
@@ -3776,14 +3772,7 @@ const DetailV1CompScreen = props => {
 
   return (
     <Container>
-      {navData && navData.type == 1 ? (
-        <DetailComponentV1 data={movieData} />
-      ) : navData && navData.type == 2 ? (
-        <DetailComponentV2 data={movieData} />
-      ) : (
-        // <DetailComponentV1 data={movieData} />
-        <DetailComponentV1 data={movieData} />
-      )}
+      <DetailComponentV1 data={movieData} />
     </Container>
   );
 };

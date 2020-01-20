@@ -1,66 +1,111 @@
 import React from 'react';
-import {StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {GLOBALSTYLES, COLORS} from './../../theme';
-import {View, Text, H3} from './../index';
+import {Text, View} from './../index';
+import {GLOBALSTYLES, COLORS} from '../../theme';
 
 const CardV2 = props => {
+  const {width} = Dimensions.get('window');
+  // cardWidth: [use for style, use for calculation:INT]
+  const cardWidth = props.cardWidth
+    ? typeof props.cardWidth == 'number' || typeof props.cardWidth == 'float'
+      ? [props.cardWidth, props.cardWidth]
+      : [
+          props.cardWidth,
+          (width *
+            Number(props.cardWidth.substring(0, props.cardWidth.length - 1))) /
+            100,
+        ]
+    : ['100%', width];
+  const cardHeight = props.cardHeight
+    ? props.cardHeight
+    : cardWidth[1] * (9 / 16);
+
   return (
-    <View style={{...styles.card, ...props.style}}>
-      <TouchableOpacity onPress={props.clickAction}>
-        <Image
+    <View
+      style={{
+        ...styles.card,
+        width: cardWidth[0],
+        ...props.style,
+      }}>
+      <TouchableOpacity
+        onPress={() => {
+          props.clickAction(props.id);
+        }}>
+        <ImageBackground
+          resizeMode="cover"
+          style={{...styles.cardImage, height: cardHeight}}
           source={{
             uri: props.image,
-          }}
-          style={styles.cardImage}
-        />
+          }}>
+          <View style={{...styles.cardOpacity, height: cardHeight}}></View>
+          <Text style={styles.titleCard}>{props.title}</Text>
+          {props.addText && props.addText != '-' ? (
+            <Text style={styles.titleSubCard}>{props.addText}</Text>
+          ) : null}
+        </ImageBackground>
       </TouchableOpacity>
-      <H3 primary numberOfLines={1} style={{paddingBottom: 0}}>
-        {props.title}
-      </H3>
-      <View style={styles.bottomCard}>
-        <Text>{props.addText}</Text>
-        <Text>
-          {props.rate == 0 ? '-' : props.rate}{' '}
-          <Icon name="star" color={COLORS.secondary} size={14}></Icon>
-        </Text>
-      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
+    marginBottom: 20,
+    borderRadius: GLOBALSTYLES.borderRadius,
     overflow: 'hidden',
-    width: 160,
+  },
+  titleCard: {
+    ...GLOBALSTYLES.H1,
+    color: COLORS.white,
+    paddingBottom: 0,
+    paddingHorizontal: 20,
+    textAlign: 'center',
+  },
+  titleSubCard: {
+    ...GLOBALSTYLES.H4,
+    color: COLORS.white,
+    paddingHorizontal: 0,
+    textAlign: 'center',
+  },
+  cardOpacity: {
+    padding: 10,
+    width: '100%',
+    backgroundColor: COLORS.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    opacity: 0.2,
+    position: 'absolute',
   },
   cardImage: {
-    height: 255,
-    borderRadius: GLOBALSTYLES.borderRadius,
-  },
-  bottomCard: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
+    backgroundColor: COLORS.gray,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
 CardV2.defaultProps = {
   style: {},
   image: '',
-  title: '-',
   bgColor: COLORS.gray,
-  addText: '-',
-  rate: '-',
+  title: '-',
+  addText: null,
 };
 
 CardV2.propTypes = {
   clickAction: PropTypes.func,
   image: PropTypes.string,
-  title: PropTypes.string,
   bgColor: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   addText: PropTypes.string,
-  rate: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  cardWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  cardHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   style: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.number,

@@ -6,8 +6,6 @@ const ListingCompScreen = props => {
   const componentList = [
     {title: 'List Card V1', screenName: 'ListsCardV1Screen', param: 1},
     {title: 'List Card V2', screenName: 'ListsCardV2Screen', param: 1},
-    {title: 'List Card V3', screenName: 'ListsCardV3Screen', param: 1},
-    {title: 'List Card V4', screenName: 'ListsCardV4Screen', param: 1},
   ];
 
   // ACTION

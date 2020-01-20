@@ -1,37 +1,31 @@
 import React from 'react';
 import {StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {GLOBALSTYLES, COLORS} from '../../theme';
-import {View, Text, RatingOneLine, H3} from './../index';
-
 import PropTypes from 'prop-types';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {GLOBALSTYLES, COLORS} from './../../theme';
+import {View, Text, H3} from './../index';
 
 const CardV1 = props => {
   return (
-    <View
-      style={{
-        ...styles.card,
-        ...props.style,
-      }}>
+    <View style={{...styles.card, ...props.style}}>
       <TouchableOpacity onPress={props.clickAction}>
         <Image
           source={{
             uri: props.image,
           }}
-          style={{...styles.cardImage, backgroundColor: props.bgColor}}
+          style={styles.cardImage}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={props.clickAction}>
-        <H3 numberOfLines={1}>{props.title}</H3>
-      </TouchableOpacity>
-      <Text style={styles.desc} numberOfLines={2}>
-        {props.desc}
-      </Text>
-      <RatingOneLine
-        maxRate={10}
-        rate={{value: props.rate, maxValue: 10}}
-        voteCount={props.voteCount}
-        fontSize={16}
-      />
+      <H3 primary numberOfLines={1} style={{paddingBottom: 0}}>
+        {props.title}
+      </H3>
+      <View style={styles.bottomCard}>
+        <Text>{props.addText}</Text>
+        <Text>
+          {props.rate == 0 ? '-' : props.rate}{' '}
+          <Icon name="star" color={COLORS.secondary} size={14}></Icon>
+        </Text>
+      </View>
     </View>
   );
 };
@@ -39,23 +33,25 @@ const CardV1 = props => {
 const styles = StyleSheet.create({
   card: {
     overflow: 'hidden',
-    width: '100%',
-  },
-  desc: {
-    marginBottom: 5,
+    width: 160,
   },
   cardImage: {
-    height: 150,
+    height: 255,
     borderRadius: GLOBALSTYLES.borderRadius,
-    marginBottom: 5,
+  },
+  bottomCard: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
 });
 
 CardV1.defaultProps = {
-  style: {width: '100%'},
+  style: {},
   image: '',
   title: '-',
   bgColor: COLORS.gray,
+  addText: '-',
+  rate: '-',
 };
 
 CardV1.propTypes = {
@@ -63,6 +59,8 @@ CardV1.propTypes = {
   image: PropTypes.string,
   title: PropTypes.string,
   bgColor: PropTypes.string,
+  addText: PropTypes.string,
+  rate: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   style: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.number,

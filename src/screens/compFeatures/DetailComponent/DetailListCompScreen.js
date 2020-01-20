@@ -5,7 +5,6 @@ import {ListSimpleV1, Header, Container, Content} from './../../../components';
 const DetailListCompScreen = props => {
   const componentList = [
     {title: 'Detail V1', screenName: 'DetailCompScreen', param: 1},
-    {title: 'Detail V2', screenName: 'DetailCompScreen', param: 2},
   ];
 
   // ACTION

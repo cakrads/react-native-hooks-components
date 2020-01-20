@@ -14,7 +14,7 @@ const ListsCardV2Screen = props => {
       <Header padder backButton>
         List Card V2 Component
       </Header>
-      <ListsCardV2 data={LISTMOVIE} clickAction={clickAction} />
+      <ListsCardV2 data={[...LISTMOVIE, ...LISTMOVIE]} clickAction={clickAction} />
     </Container>
   );
 };

@@ -14,13 +14,6 @@ import {withNavigation} from 'react-navigation';
 import {GLOBALSTYLES, COLORS} from './../../theme';
 import {View, Text, RatingStarV1, H1, H2} from './../index';
 
-import AddInfo from './component/AddInfo';
-import Sinopsis from './component/Sinopsis';
-import Tagline from './component/Tagline';
-import CrewAndCast from './component/CrewAndCast';
-import TrailerMovie from './component/TrailerMovie';
-import ProductionCompanies from './component/ProductionCompanies';
-
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 const IMAGE_HEIGHT = SCREEN_HEIGHT * (45 / 100);
 const HEADER_HEIGHT = Platform.OS === 'ios' ? 64 : 50;
@@ -36,53 +29,6 @@ const DetailV1 = props => {
       Animated.event([{value: scroll}], {useNativeDriver: false}),
     );
   });
-
-  const HeaderTitle = ({data}) => {
-    const headerDisplay = scroll.interpolate({
-      inputRange: [0, SCROLL_HEIGHT / 2, SCROLL_HEIGHT],
-      outputRange: [0, 0.3, 1],
-      extrapolate: 'clamp',
-    });
-
-    return (
-      <Animated.View style={{...styles.headerTitle, opacity: headerDisplay}}>
-        <ImageBackground
-          resizeMode="cover"
-          style={{width: '100%'}}
-          source={{
-            uri: `https://image.tmdb.org/t/p/w500/${data.poster_path}`,
-          }}>
-          <View style={styles.hTMain}>
-            <TouchableOpacity
-              style={styles.hTBackButton}
-              onPress={() => props.navigation.goBack()}>
-              <Icon
-                name={Platform.OS == 'ios' ? 'chevron-left' : 'arrow-left'}
-                size={GLOBALSTYLES.H1.fontSize}
-                color={COLORS.text}
-              />
-            </TouchableOpacity>
-            <View style={styles.hTH1}>
-              <H1>{data.title}</H1>
-            </View>
-            {/* Cooming Soon
-            <TouchableOpacity
-              style={{
-                minWidth: 44,
-                marginLeft: 10,
-                alignItems: 'center',
-              }}>
-              <Icon
-                name="share"
-                size={GLOBALSTYLES.H1.fontSize}
-                color={COLORS.text}
-              />
-            </TouchableOpacity> */}
-          </View>
-        </ImageBackground>
-      </Animated.View>
-    );
-  };
 
   const HeaderImage = ({data}) => {
     const BackButton = () => {
@@ -110,50 +56,8 @@ const DetailV1 = props => {
         }}>
         <View style={styles.hIMain}>
           <BackButton />
-          {/* <TouchableOpacity
-            style={styles.hIShare}>
-            <Icon name="share" size={GLOBALSTYLES.H1.fontSize} />
-          </TouchableOpacity> */}
         </View>
       </ImageBackground>
-    );
-  };
-
-  const TitleCard = ({data}) => {
-    return (
-      <View style={styles.hICard}>
-        <View style={styles.hICMain}>
-          <View style={styles.hICTitle}>
-            <View>
-              <H2
-                style={{
-                  paddingTop: 0,
-                }}>
-                {data.title}
-              </H2>
-            </View>
-          </View>
-          <View style={styles.hICShare}>
-            <RatingStarV1 rate={data.vote_average} userRate={data.vote_count} />
-          </View>
-        </View>
-        <View style={styles.hICMainBottom}>
-          <View>
-            <Text style={{color: COLORS.gray}}>
-              {data.original_title} (
-              <Text style={GLOBALSTYLES.italic}>original title</Text>)
-            </Text>
-            <Text style={styles.hICGenre}>
-              {data.genres
-                .map(x => {
-                  return `${x.name}`;
-                })
-                .join(', ')}{' '}
-              • {data.runtime} min
-            </Text>
-          </View>
-        </View>
-      </View>
     );
   };
 
@@ -161,26 +65,7 @@ const DetailV1 = props => {
 
   return (
     <View>
-      <HeaderTitle data={main} />
-      <Animated.ScrollView
-        scrollEventThrottle={5}
-        showsVerticalScrollIndicator={false}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: nScroll}}}],
-          {useNativeDriver: true},
-        )}
-        style={{zIndex: 0}}>
-        <HeaderImage data={main} />
-        <TitleCard data={main} />
-        <View style={styles.containerDetail}>
-          <Sinopsis data={main} />
-          <Tagline data={main} />
-          <TrailerMovie data={videos} />
-          <ProductionCompanies data={main} />
-          <CrewAndCast data={crewAndCast} />
-          <AddInfo data={main} />
-        </View>
-      </Animated.ScrollView>
+      <HeaderImage data={main} />
     </View>
   );
 };
